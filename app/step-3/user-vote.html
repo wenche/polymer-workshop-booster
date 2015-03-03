@@ -1,0 +1,94 @@
+<link rel="import" href="../components/polymer/polymer.html">
+<link rel="import" href="../components/paper-button/paper-button.html">
+<link rel="import" href="../components/core-ajax/core-ajax.html">
+<link rel="import" href="user-global.html">
+
+<polymer-element name="user-vote">
+    <template>
+        <style>
+            :host {
+                width:100%;
+                height:inherit;
+                display:block;
+            }
+            .question
+            {
+                padding: 1em;
+                width:100%;
+                /*margin-top: 50%;*/
+                margin-bottom: 0.5em;
+                text-align: center;
+                font-size: 0.7em;
+                font-style: italic;
+                background-color: rgba(0,0,0,0.3);
+                color: white;
+            }
+            .tandis{
+                height:inherit;
+                width:inherit;
+            }
+            .tandis img{
+                height:10%;
+                width:100%;
+            }
+            .content {
+                background-image: url(../images/TandeP.svg);
+                background-repeat: no-repeat;
+                background-position: center top;
+                background-size: 26%;
+            }
+            .colored{
+                padding:0.3em;
+                background:#704d8c;
+                color:white;
+            }
+            .hide{
+                display:none;
+            }
+        </style>
+        <user-global id="global"></user-global>
+        <core-ajax id="ajax"
+                   auto
+                   url="/api/questions/1"
+                   on-core-response="{{questionLoaded}}"
+                   handleAs="json">
+        </core-ajax>
+        <core-ajax id="vote"
+                   method="PUT"
+                   url="../api/votes/{{question.id}}"
+                   on-core-response="{{voteRegistered}}"
+                   on-core-error="{{error}}"
+                   handleAs="json"
+                   contentType="application/json"
+                   body="{ 'userid' : {{$.global.user.uid}}, 'hot' : true}">
+        </core-ajax>
+
+        <div vertical layout fit center>
+            <div class="tandis"><img src="../images/TandeP.svg"></div>
+            <div class="question">"{{question.text}}"</div>
+            <paper-button id="mentometerknapp" raised class="colored" title="Mentometerknapp" on-tap="{{mentometerPushed}}">Mentometer-button</paper-button>
+        </div>
+    </template>
+    <script>
+        Polymer({
+            questionLoaded: function() {
+                this.question = this.$.ajax.response;
+            },
+            mentometerPushed: function(event, detail, sender) {
+                this.$.vote.go();
+
+                this.fire("voting-tap");
+            },
+            voteRegistered: function(){
+                this.$.mentometerknapp.setAttribute("class", "hide");
+                this.question = {
+                    uid:100,
+                    text: "Thanks!"
+                };
+            },
+            error:function(event, detail, sender){
+                this.fire('error', detail);
+            }
+        })
+    </script>
+</polymer-element>

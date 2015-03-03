@@ -1,0 +1,23 @@
+<link rel="import" href="../components/polymer/polymer.html">
+<link rel="import" href="user-global.html">
+
+<polymer-element name="user-view" noscript>
+    <template>
+        <style>
+            :host{
+                display:block;
+            }
+            .avatar {
+                width: 50px;
+                border-radius: 50%;
+                margin: 10px;
+            }
+        </style>
+        <div horizontal layout center-center>
+            <user-global id="global"></user-global>
+            <template bind="{{$.global.user}}">
+                <img class="avatar" src="{{avatar}}" alt="user avatar"/>{{alias}}
+            </template>
+        </div>
+    </template>
+</polymer-element>

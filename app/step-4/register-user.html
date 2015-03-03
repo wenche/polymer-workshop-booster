@@ -1,0 +1,68 @@
+<link rel="import" href="../components/paper-input/paper-input.html">
+<link rel="import" href="../components/paper-button/paper-button.html">
+<link rel="import" href="../components/core-ajax/core-ajax.html">
+<link rel="import" href="../components/pubnub-polymer/pubnub-element.html">
+
+<polymer-element name="register-user">
+    <template>
+        <style>
+            :host {
+                width:inherit;
+                height:inherit;
+                background-color: white;
+                padding: 1em;
+                font-size: 1.2rem;
+                font-weight: 300;
+            }
+        </style>
+        <user-global id="global"></user-global>
+
+        <core-ajax id="ajax" method="POST" url="/api/users"
+                   handleAs="json"
+                   contentType="application/json"
+                   on-core-response="{{userRegistered}}"
+                   on-core-error="{{error}}"
+                   body="{ 'alias' : '{{value}}' }">
+        </core-ajax>
+
+        <core-pubnub publish_key="pub-c-a7a900bb-9082-4016-b7c1-398ed8d45ebd"
+                     subscribe_key="sub-c-a85bdc94-b878-11e4-9a8b-0619f8945a4f">
+            <core-pubnub-subscribe channel="registration" id="sub"  messages="{{messages}}">
+                <core-pubnub-publish id="pub" channel="registration"></core-pubnub-publish>
+            </core-pubnub-subscribe>
+        </core-pubnub>
+
+        <div layout vertical center-center>
+            <paper-input id="alias" label="Set alias/user name" floatingLabel title="Set alias" committedValue="{{value}}"></paper-input>
+            <paper-button raised class="colored" on-tap="{{register}}">Registrer alias!</paper-button>
+        </div>
+    </template>
+    <script>
+        Polymer({
+            register: function(event, detail, sender) {
+                this.$.ajax.go();
+            },
+            userRegistered: function (){
+                var userObj = this.$.global.user;
+
+                userObj.alias = this.$.ajax.response.alias;
+                userObj.avatar = "../images/" + this.$.ajax.response.avatar;
+                userObj.uid = this.$.ajax.response.id;
+                this.$.alias.value = '';
+
+                this.publishRegistration();
+                this.fire('user-registered');
+            },
+            error: function(event, detail, sender){
+                this.fire('error', detail);
+            },
+            publishRegistration: function () {
+                this.$.pub.message = {
+                    alias: this.$.ajax.response.alias,
+                    timestamp: new Date().toISOString()
+                };
+                this.$.pub.publish();
+            }
+        })
+    </script>
+</polymer-element>

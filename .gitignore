@@ -1,0 +1,6 @@
+node_modules/
+app/components
+.tmp/
+.DS_Store
+npm-debug.log
+.idea/
