@@ -15,7 +15,7 @@
                      subscribe_key="sub-c-a85bdc94-b878-11e4-9a8b-0619f8945a4f"
                 >
             <core-pubnub-subscribe channel="booster-chat" id="sub" on-callback="{{subscribeCallback}}" messages="{{messages}}">
-                <core-pubnub-publish id="pub" channel="booster-chat"></core-pubnub-publish>
+                <core-pubnub-publish id="pub" channel="booster-chat" message=""></core-pubnub-publish>
             </core-pubnub-subscribe>
         </core-pubnub>
 
