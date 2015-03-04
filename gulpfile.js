@@ -26,7 +26,8 @@ gulp.task('default', function() {
         server: {
             baseDir: 'app/',
             middleware: proxyMiddleware
-        }
+        },
+        startPath: "starter/index.html"
     });
 
     gulp.watch(['*.html'], {cwd: 'app/'}, reload);
