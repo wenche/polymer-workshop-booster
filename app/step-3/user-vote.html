@@ -1,9 +1,8 @@
 <link rel="import" href="../components/polymer/polymer.html">
 <link rel="import" href="../components/paper-button/paper-button.html">
 <link rel="import" href="../components/core-ajax/core-ajax.html">
-<link rel="import" href="user-global.html">
 
-<polymer-element name="user-vote">
+<polymer-element name="user-vote" attributes="{{user}}">
     <template>
         <style>
             :host {
@@ -46,7 +45,7 @@
                 display:none;
             }
         </style>
-        <user-global id="global"></user-global>
+
         <core-ajax id="ajax"
                    auto
                    url="/api/questions/1"
@@ -60,7 +59,7 @@
                    on-core-error="{{error}}"
                    handleAs="json"
                    contentType="application/json"
-                   body="{ 'userid' : {{$.global.user.uid}}, 'hot' : true}">
+                   body="{ 'userid' : '{{user.uid}}', 'hot' : true}">
         </core-ajax>
 
         <div vertical layout fit center>

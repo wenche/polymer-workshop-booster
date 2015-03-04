@@ -3,7 +3,7 @@
 <link rel="import" href="../components/core-ajax/core-ajax.html">
 <link rel="import" href="../components/pubnub-polymer/pubnub-element.html">
 
-<polymer-element name="register-user">
+<polymer-element name="register-user" attributes="{{user}}">
     <template>
         <style>
             :host {
@@ -39,21 +39,27 @@
     </template>
     <script>
         Polymer({
+            publish: {
+                user: {
+                    value: {},
+                    reflect: true
+                }
+            },
             register: function(event, detail, sender) {
                 this.$.ajax.go();
             },
-            userRegistered: function (){
-                var userObj = this.$.global.user;
+            userRegistered: function(){
 
-                userObj.alias = this.$.ajax.response.alias;
-                userObj.avatar = "../images/" + this.$.ajax.response.avatar;
-                userObj.uid = this.$.ajax.response.id;
-                this.$.alias.value = '';
+                this.user = {
+                    uid: this.$.ajax.response.id,
+                    alias: this.$.ajax.response.alias,
+                    avatar: "../images/" + this.$.ajax.response.avatar
+                };
 
                 this.publishRegistration();
                 this.fire('user-registered');
             },
-            error: function(event, detail, sender){
+            error:function(event, detail, sender){
                 this.fire('error', detail);
             },
             publishRegistration: function () {

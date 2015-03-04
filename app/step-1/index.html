@@ -109,7 +109,7 @@
         <core-toolbar tool flex class="header">
             <div flex>{{selectedPage.page.name}}</div>
             <div halign="right">
-                <user-view></user-view>
+                <user-view user={{user}}></user-view>
             </div>
         </core-toolbar>
 
@@ -125,6 +125,7 @@
                     <!-- Step 3 Insert element -->
                 </section>
                 <section hash="chat" layout vertical center-center>
+                    <!-- Step 5 Insert element -->
                 </section>
             </core-animated-pages>
             <paper-toast id="toast"></paper-toast>

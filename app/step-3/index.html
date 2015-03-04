@@ -111,7 +111,7 @@
         <core-toolbar tool flex class="header">
             <div flex>{{selectedPage.page.name}}</div>
             <div halign="right">
-                <user-view></user-view>
+                <user-view user={{user}}></user-view>
             </div>
         </core-toolbar>
 
@@ -121,12 +121,13 @@
                                  on-tap="{{cyclePages}}">
 
                 <section hash="register" layout vertical center-center>
-                    <register-user></register-user>
+                    <register-user user="{{user}}"></register-user>
                 </section>
                 <section hash="vote" vertical center-center>
-                    <user-vote></user-vote>
+                    <user-vote user="{{user}}"></user-vote>
                 </section>
                 <section hash="chat" layout vertical center-center>
+                    <!-- Step 5 Insert element -->
                 </section>
             </core-animated-pages>
             <paper-toast id="toast"></paper-toast>
@@ -140,15 +141,18 @@
         /*more logic to come */
         var registerUser = document.querySelector('register-user');
         var toast = document.querySelector('paper-toast');
+        var userView = document.querySelector('user-view');
         var userVote = document.querySelector('user-vote');
 
         registerUser.addEventListener('user-registered', function() {
+            userView.user = this.user;
+            userVote.user = this.user;
             toast.text = "Congrats, you are registered!";
             toast.show();
         });
 
         registerUser.addEventListener('error', function(detail) {
-            toast.text = "Oooh no, a something went horribly wrong...";
+            toast.text = "Oooh no, a something went horribly wrong" + detail.detail.response;
             toast.show();
         });
 
@@ -157,7 +161,7 @@
             toast.show();
         });
         userVote.addEventListener('error', function(detail) {
-            toast.text = "Oooh no, a something went horribly wrong when voting...";
+            toast.text = "Oooh no, a something went horribly wrong when voting + detail.detail.response";
             toast.show();
         });
     });

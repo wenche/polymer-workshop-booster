@@ -2,7 +2,6 @@
 <link rel="import" href="../components/paper-fab/paper-fab.html">
 <link rel="import" href="../components/paper-input/paper-input.html">
 <link rel="import" href="../components/pubnub-polymer/pubnub-element.html">
-<link rel="import" href="user-global.html">
 
 
 <polymer-element name="user-chat" attributes="user">
@@ -10,7 +9,7 @@
         <style>
 
         </style>
-        <user-global id="global"></user-global>
+
         <core-pubnub publish_key="pub-c-a7a900bb-9082-4016-b7c1-398ed8d45ebd"
                      subscribe_key="sub-c-a85bdc94-b878-11e4-9a8b-0619f8945a4f"
                 >
@@ -32,8 +31,8 @@
                 if(!this.$.input) return;
 
                 this.$.pub.message = {
-                    alias: this.$.global.user.alias,
-                    avatar: this.$.global.user.avatar,
+                    alias: this.user.alias,
+                    avatar: this.user.avatar,
                     text: this.input,
                     timestamp: new Date().toISOString()
                 };

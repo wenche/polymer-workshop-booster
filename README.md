@@ -14,8 +14,8 @@ This project includes skeleton for the workshop app with instructions to solve a
 ## Steps
 
 # Step 1 Create user element
-In this task we will set up the polymer element to display the user alias and avatar. A global
-user object element and a SPA shell is already in place, we are going to implement the template to show info about the
+In this task we will set up the polymer element to display the user alias and avatar. A SPA shell is already in place,
+we are going to implement the template to show info about the
 current user in upper right corner (header).
 Let's start in folder "starter"!
 
@@ -29,20 +29,23 @@ Code insertions:
 ###In user-view.html
 
     <link rel="import" href="../components/polymer/polymer.html">
-    <link rel="import" href="user-global.html">
+    <link rel="import" href="../components/core-localstorage/core-localstorage.html">
 
 
-    <user-global id="global"></user-global>
-    <template bind="{{$.global.user}}">
-         <img class="avatar" src="{{avatar}}" alt="user avatar"/>{{alias}}
-     </template>
+    <core-localstorage id="storage" name="user-storage" value="{{user}}"></core-localstorage>
+    <template if="{{user}}">
+        <img class="avatar" src="{{user.avatar}}" alt="user avatar"/> {{user.alias}}
+    </template>
+     <template if="!{{ user }}">
+        <img class="avatar" src="../images/question-mark.svg" alt="user avatar"/> Unregistered
+    </template>
 
 ###In index.html
 
       <link rel="import" href="user-view.html">
 
 
-      <user-view></user-view>
+      <user-view user={{user}}></user-view>
 
 # Step 2 Register user
 In this task we will set up the polymer element to register user.
@@ -66,7 +69,6 @@ Code insertions:
       <link rel="import" href="../components/paper-button/paper-button.html">
       <link rel="import" href="../components/core-ajax/core-ajax.html">
       <link rel="import" href="../components/pubnub-polymer/pubnub-element.html">
-      <link rel="import" href="user-global.html">
 
 
       :host {
@@ -78,7 +80,6 @@ Code insertions:
         font-weight: 300;
       }
 
-      <user-global id="global"></user-global>
 
       <core-ajax id="ajax" method="POST" url="/api/users"
       handleAs="json"
@@ -90,7 +91,7 @@ Code insertions:
 
       <core-pubnub publish_key="pub-c-a7a900bb-9082-4016-b7c1-398ed8d45ebd"
       subscribe_key="sub-c-a85bdc94-b878-11e4-9a8b-0619f8945a4f">
-        <core-pubnub-subscribe channel="registration" id="sub" on-callback="{{subscribeCallback}}" messages="{{messages}}">
+        <core-pubnub-subscribe channel="registration" id="sub"  messages="{{messages}}">
           <core-pubnub-publish id="pub" channel="registration" message=""></core-pubnub-publish>
           </core-pubnub-subscribe>
       </core-pubnub>
@@ -100,44 +101,51 @@ Code insertions:
         <paper-button raised class="colored" on-tap="{{register}}">Registrer alias!</paper-button>
       </div>
 
-
-    register: function(event, detail, sender) {
+    publish: {
+        user: {
+          value: {},
+          reflect: true
+        }
+      },
+      register: function(event, detail, sender) {
         this.$.ajax.go();
-    },
-    userRegistered: function (){
-        var userObj = this.$.global.user;
+      },
+      userRegistered: function(){
 
-        userObj.alias = this.$.ajax.response.alias;
-        userObj.avatar = "../images/" + this.$.ajax.response.avatar;
-        userObj.uid = this.$.ajax.response.id;
-        this.$.alias.value = '';
+        this.user = {
+          uid: this.$.ajax.response.id,
+          alias: this.$.ajax.response.alias,
+          avatar: "../images/" + this.$.ajax.response.avatar
+        };
 
         this.publishRegistration();
         this.fire('user-registered');
-    },
-    error: function(event, detail, sender){
+      },
+      error:function(event, detail, sender){
         this.fire('error', detail);
-    },
-    publishRegistration: function () {
-        this.$.pub.message = {
-          alias: this.$.ajax.response.alias,
-          timestamp: new Date().toISOString()
-        };
-        this.$.pub.publish();
-    }
+      },
+      publishRegistration: function () {
+          this.$.pub.message = {
+            alias: this.$.ajax.response.alias,
+            timestamp: new Date().toISOString()
+          };
+          this.$.pub.publish();
+      }
 
 ###In index.html
 
       <link rel="import" href="register-user.html">
 
 
-      <register-user></register-user>
+      <register-user user={{user}}></register-user>
 
 
       var registerUser = document.querySelector('register-user');
       var toast = document.querySelector('paper-toast');
+      var userView = document.querySelector('user-view');
 
       registerUser.addEventListener('user-registered', function() {
+          userView.user = this.user;
           toast.text = "Congrats, you are registered!";
           toast.show();
       });
@@ -199,7 +207,6 @@ Code insertions:
           display:none;
       }
 
-      <user-global id="global"></user-global>
       <core-ajax id="ajax"
                  auto
                  url="/api/questions/1"
@@ -213,7 +220,7 @@ Code insertions:
                  on-core-error="{{error}}"
                  handleAs="json"
                  contentType="application/json"
-                 body="{ 'userid' : {{$.global.user.uid}}, 'hot' : true}">
+                 body="{ 'userid' : '{{user.uid}}', 'hot' : true}">
       </core-ajax>
 
       <div vertical layout fit center>
@@ -235,7 +242,7 @@ Code insertions:
         this.$.mentometerknapp.setAttribute("class", "hide");
         this.question = {
             uid:100,
-            text: "Takk for din deltakelse"
+            text: "Thanks!"
         };
       },
       error:function(event, detail, sender){
@@ -247,13 +254,15 @@ Code insertions:
     <!-- Import the newly created custom element -->
 
 
-    <!-- Insert custom element -->
+    <!-- Insert custom element with attribute -->
 
 
     var userVote = document.querySelector('user-vote');
 
-    //In between earlier code insertions
+    //In register user
+    userVote.user = this.user;
 
+    //Following the other event listeners
     userVote.addEventListener('voting-tap', function() {
       // Implement similar toast functionality like above to confirm that user voted
     });
