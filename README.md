@@ -33,12 +33,17 @@ Code insertions:
 
 
     <core-localstorage id="storage" name="user-storage" value="{{user}}"></core-localstorage>
-    <template if="{{user}}">
-        <img class="avatar" src="{{user.avatar}}" alt="user avatar"/> {{user.alias}}
-    </template>
-     <template if="!{{ user }}">
-        <img class="avatar" src="../images/question-mark.svg" alt="user avatar"/> Unregistered
-    </template>
+
+    <img class="avatar" src="{{user.avatar}}" alt="user avatar"/> {{user.alias}}
+
+    publish: {
+        user: {
+            uid: '',
+            avatar: '../images/question-mark.svg',
+            alias: 'Unregistered'
+        }
+    }
+
 
 ###In index.html
 
@@ -70,6 +75,7 @@ Code insertions:
       <link rel="import" href="../components/core-ajax/core-ajax.html">
       <link rel="import" href="../components/pubnub-polymer/pubnub-element.html">
 
+       attribute={{user}} in element tag
 
       :host {
         width:inherit;

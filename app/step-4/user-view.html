@@ -1,7 +1,7 @@
 <link rel="import" href="../components/polymer/polymer.html">
 <link rel="import" href="../components/core-localstorage/core-localstorage.html">
 
-<polymer-element name="user-view" attributes="user" noscript>
+<polymer-element name="user-view">
     <template>
         <style>
             :host{
@@ -15,12 +15,19 @@
         </style>
         <div horizontal layout center-center>
             <core-localstorage id="storage" name="user-storage" value="{{user}}"></core-localstorage>
-            <template if="{{user}}">
-                <img class="avatar" src="{{user.avatar}}" alt="user avatar"/> {{user.alias}}
-            </template>
-            <template if="!{{ user }}">
-                <img class="avatar" src="../images/question-mark.svg" alt="user avatar"/> Unregistered
-            </template>
+            <img class="avatar" src="{{user.avatar}}" alt="user avatar"/> {{user.alias}}
+
         </div>
     </template>
+    <script>
+        Polymer({
+            publish: {
+                user: {
+                    uid: '',
+                    avatar: '../images/question-mark.svg',
+                    alias: 'Unregistered'
+                }
+            }
+        });
+    </script>
 </polymer-element>
