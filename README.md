@@ -37,11 +37,13 @@ Code insertions:
     <img class="avatar" src="{{user.avatar}}" alt="user avatar"/> {{user.alias}}
 
     publish: {
-        user: {
-            uid: '',
-            avatar: '../images/question-mark.svg',
-            alias: 'Unregistered'
-        }
+        created: function (){
+           this.user = {
+               uid: '',
+               avatar: '../images/question-mark.svg',
+               alias: 'Unregistered'
+           }
+       }
     }
 
 
@@ -75,7 +77,6 @@ Code insertions:
       <link rel="import" href="../components/core-ajax/core-ajax.html">
       <link rel="import" href="../components/pubnub-polymer/pubnub-element.html">
 
-       attribute={{user}} in element tag
 
       :host {
         width:inherit;
