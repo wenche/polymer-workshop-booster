@@ -278,17 +278,7 @@ Code insertions:
     });
 
 
-## Step 4 Get final question
-In this task we will set up the polymer element to get final question from api.
-The element is created and set up from step 3 and we will adjust the ajax call
-to get the final question and then do the final voting.
-
-Change url="/api/questions/1" to url="/api/questions/2" and your done!
-
-Then wait for further instructions before pushing the button ;)
-
-
-## Step 5 (Optional) Chat
+## Step 4 Chat
 In this task we will create a chat element. This will be similar to user registration and the keys will be the same, but we will
 publish and subscribe to a different channel, and the we create a message object when you click "Send" button,
 containing the user's avatar, alias, a timestamp and the message itself.
@@ -302,5 +292,13 @@ Following is some code you will need. If you need more hints, take a look in the
         <core-pubnub-publish id="pub" channel="booster-chat"></core-pubnub-publish>
     </core-pubnub-subscribe>
 
+## Step 5 Get final question
+In this task we will set up the polymer element to get final question from api.
+But first we need a button that that signals the api you are ready to vote.
+This is done with a paper-button og a AJAX call to /api/xxxxxxx.
+The element is created and set up from step 3 and we will adjust the ajax call
+to get the final question and then do the final voting.
 
+Change url="/api/questions/1" to url="/api/questions/2" and your done!
 
+Then wait for further instructions before pushing the button ;)

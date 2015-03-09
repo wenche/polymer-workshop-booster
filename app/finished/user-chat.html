@@ -6,23 +6,19 @@
 
 <polymer-element name="user-chat" attributes="user">
     <template>
-        <style>
-
-        </style>
+        <style></style>
 
         <core-pubnub publish_key="pub-c-a7a900bb-9082-4016-b7c1-398ed8d45ebd"
-                     subscribe_key="sub-c-a85bdc94-b878-11e4-9a8b-0619f8945a4f"
-                >
+                     subscribe_key="sub-c-a85bdc94-b878-11e4-9a8b-0619f8945a4f">
             <core-pubnub-subscribe channel="booster-chat" id="sub" on-callback="{{subscribeCallback}}" messages="{{messages}}">
                 <core-pubnub-publish id="pub" channel="booster-chat" message=""></core-pubnub-publish>
             </core-pubnub-subscribe>
         </core-pubnub>
 
-
-            <div class="send-message" layout >
-                <paper-input flex label="Type message..." id="input" value="{{input}}"></paper-input>
-                <paper-fab icon="send" id="sendButton" on-tap="{{sendMyMessage}}"></paper-fab>
-            </div>
+        <div class="send-message" layout >
+            <paper-input flex label="Type message..." id="input" value="{{input}}"></paper-input>
+            <paper-fab icon="send" id="sendButton" on-tap="{{sendMyMessage}}"></paper-fab>
+        </div>
 
     </template>
     <script>

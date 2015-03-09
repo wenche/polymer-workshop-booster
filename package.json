@@ -1,10 +1,15 @@
 {
   "name": "booster-demo",
   "devDependencies": {
+    "bower": "¨1.3.12",
     "browser-sync": "^2.0.0-rc10",
     "gulp": "^3.8.10",
     "http-proxy": "^1.8.1",
     "proxy-middleware": "^0.11.0",
     "url": "^0.10.2"
+  },
+  "scripts":{
+    "start":"node node_modules/gulp/bin/gulp.js",
+    "postinstall": "node_modules/bower/bin/bower install"
   }
 }
