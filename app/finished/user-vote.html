@@ -52,14 +52,13 @@
                    on-core-response="{{questionLoaded}}"
                    handleAs="json">
         </core-ajax>
-        <core-ajax id="registerVoter"
-                   method="POST"
-                   url="../api/registerVoter"
+        <core-ajax id="voter"
+                   method="PUT"
+                   url="../api/users/{{user.uid}}/include"
                    on-core-response="{{voterRegistered}}"
                    on-core-error="{{error}}"
                    handleAs="json"
-                   contentType="application/json"
-                   body="{ 'userid' : '{{user.uid}}'}">
+                   contentType="application/json">
         </core-ajax>
         <core-ajax id="vote"
                    method="PUT"
@@ -88,12 +87,11 @@
                 this.question = this.$.ajax.response;
             },
             registerVoter: function(event, detail, sender) {
-                //this.$.registerVoter.go();
-                this.registeredVoter = true;
-                this.$.registerVoter.setAttribute("class", "hide");
+                this.$.voter.go();
             },
             voterRegistered: function(){
               this.registeredVoter = true;
+              this.$.registerVoter.setAttribute("class", "hide");
             },
             mentometerPushed: function(event, detail, sender) {
                 this.$.vote.go();
