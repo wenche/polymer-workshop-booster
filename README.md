@@ -5,10 +5,9 @@ This project includes skeleton for the workshop app with instructions to solve a
 ## Project contents
 
  -   `starter` - Where you start coding, has skeleton elements and empty elements
- -   `step-1` to `step-4` - The steps to follow during the workshop, which are the finished result of the step's goal
+ -   `step-1` to `step-5` - The steps to follow during the workshop, which are the finished result of the step's goal
  -   `finished`. The completed app.
  -   `components`. Selection of Polymer elements used in the project.
- -   `api`. Data for the service.
  -   `images`. Avatar images.
 
 ## Steps
