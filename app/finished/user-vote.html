@@ -52,6 +52,15 @@
                    on-core-response="{{questionLoaded}}"
                    handleAs="json">
         </core-ajax>
+        <core-ajax id="registerVoter"
+                   method="POST"
+                   url="../api/registerVoter"
+                   on-core-response="{{voterRegistered}}"
+                   on-core-error="{{error}}"
+                   handleAs="json"
+                   contentType="application/json"
+                   body="{ 'userid' : '{{user.uid}}'}">
+        </core-ajax>
         <core-ajax id="vote"
                    method="PUT"
                    url="../api/votes/{{question.id}}"
@@ -64,18 +73,30 @@
 
         <div vertical layout fit center>
             <div class="tandis"><img src="../images/TandeP.svg"></div>
-            <div class="question">"{{question.text}}"</div>
-            <paper-button id="mentometerknapp" raised class="colored" title="Mentometerknapp" on-tap="{{mentometerPushed}}">Mentometer-button</paper-button>
+            <paper-button id="registerVoter" raised class="colored" title="Er du klar til å stemme?" on-tap="{{registerVoter}}">Er du klar for å stemme?</paper-button>
+
+            <template if={{registeredVoter}}>
+              <div class="question">"{{question.text}}"</div>
+              <paper-button id="mentometerknapp" raised class="colored" title="Mentometerknapp" on-tap="{{mentometerPushed}}">Mentometer-button</paper-button>
+            </template>
         </div>
     </template>
     <script>
         Polymer({
+            registeredVoter : false,
             questionLoaded: function() {
                 this.question = this.$.ajax.response;
             },
+            registerVoter: function(event, detail, sender) {
+                //this.$.registerVoter.go();
+                this.registeredVoter = true;
+                this.$.registerVoter.setAttribute("class", "hide");
+            },
+            voterRegistered: function(){
+              this.registeredVoter = true;
+            },
             mentometerPushed: function(event, detail, sender) {
                 this.$.vote.go();
-
                 this.fire("voting-tap");
             },
             voteRegistered: function(){

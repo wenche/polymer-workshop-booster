@@ -279,9 +279,10 @@ Code insertions:
 
 
 ## Step 4 Chat
-In this task we will create a chat element. This will be similar to user registration and the keys will be the same, but we will
-publish and subscribe to a different channel, and the we create a message object when you click "Send" button,
-containing the user's avatar, alias, a timestamp and the message itself.
+
+In this task we will create a chat element. This will be similar to the user registration and the keys will be the same, but we will
+publish and subscribe to a different channel. We will create a message object so that when you click "Send" button,
+the message object contains the user's avatar, the alias, a timestamp and the message itself.
 
 In other words, we will make an element with a template for user input and some logic for publishing messages and subscribe to
 callbacks. Remember to update index.html... :-)
@@ -293,12 +294,17 @@ Following is some code you will need. If you need more hints, take a look in the
     </core-pubnub-subscribe>
 
 ## Step 5 Get final question
+Documentation:
+ -  https://www.polymer-project.org/0.5/docs/polymer/binding-types.html
+
 In this task we will set up the polymer element to get final question from api.
 But first we need a button that that signals the api you are ready to vote.
-This is done with a paper-button og a AJAX call to /api/xxxxxxx.
-The element is created and set up from step 3 and we will adjust the ajax call
-to get the final question and then do the final voting.
+This is done with a paper-button, a boolean property on your element and a AJAX call to /api/xxxxxxx.
+The button fires the ajax call and updates the boolean property that voter is registered.
 
-Change url="/api/questions/1" to url="/api/questions/2" and your done!
+The elements containing the question and mentometerbutton from step 3 should be wrapped in a conditional template that has the If attribute binded to the boolen property
+We will also adjust the ajax call to get the final question and then do the final voting.
+
+Change url="/api/questions/1" to url="/api/questions/2" and you are done!
 
 Then wait for further instructions before pushing the button ;)

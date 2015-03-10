@@ -23,6 +23,7 @@
     <link rel="import" href="user-view.html">
     <link rel="import" href="register-user.html">
     <link rel="import" href="user-vote.html">
+    <link rel="import" href="user-chat.html">
 
     <style>
         body {
@@ -127,7 +128,7 @@
                     <user-vote user="{{user}}"></user-vote>
                 </section>
                 <section hash="chat" layout vertical center-center>
-                    <!-- Step 5 Insert element -->
+                  <user-chat user="{{user}}"></user-chat>
                 </section>
             </core-animated-pages>
             <paper-toast id="toast"></paper-toast>
@@ -143,10 +144,12 @@
         var toast = document.querySelector('paper-toast');
         var userView = document.querySelector('user-view');
         var userVote = document.querySelector('user-vote');
+        var userChat = document.querySelector('user-chat');
 
         registerUser.addEventListener('user-registered', function() {
             userView.user = this.user;
             userVote.user = this.user;
+            userChat.user = this.user;
             toast.text = "Congrats, you are registered!";
             toast.show();
         });
@@ -162,6 +165,10 @@
         });
         userVote.addEventListener('error', function(detail) {
             toast.text = "Oooh no, a something went horribly wrong when voting + detail.detail.response";
+            toast.show();
+        });
+        userChat.addEventListener('message-delivered', function () {
+            toast.text = "Message is delivered!";
             toast.show();
         });
     });
