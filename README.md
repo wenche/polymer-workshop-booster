@@ -298,7 +298,7 @@ Documentation:
 
 In this task we will set up the polymer element to get final question from api.
 But first we need a button that that signals the api you are ready to vote.
-This is done with a paper-button, a boolean property on your element and a AJAX call to /api/xxxxxxx.
+This is done with a paper-button, a boolean property on your element and a AJAX call to /api/user/{{user.uid}}/include
 The button fires the ajax call and updates the boolean property that voter is registered.
 
 The elements containing the question and mentometerbutton from step 3 should be wrapped in a conditional template that has the If attribute binded to the boolean property
@@ -307,3 +307,8 @@ We will also adjust the ajax call to get the final question and then do the fina
 Change url="/api/questions/1" to url="/api/questions/2" and you are done!
 
 Then wait for further instructions before pushing the button ;)
+
+
+
+
+../api/user/{{user.uid}}/include
